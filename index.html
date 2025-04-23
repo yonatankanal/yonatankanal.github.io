@@ -20,5 +20,61 @@
     <input type="file" id="workspaceFile" name="workspaceFile">
   </div>
 
+  <br>
+
+  <button onclick="processFiles()">Process Files and Generate Downloads</button>
+
+  <div id="downloadLinks">
+    </div>
+
+  <script>
+    async function processFiles() {
+      const studentFile = document.getElementById('studentFile').files[0];
+      const workspaceFile = document.getElementById('workspaceFile').files[0];
+      const downloadLinksDiv = document.getElementById('downloadLinks');
+      downloadLinksDiv.innerHTML = 'Processing files...'; // Provide user feedback
+
+      if (!studentFile || !workspaceFile) {
+        downloadLinksDiv.innerHTML = 'Please upload both files.';
+        return;
+      }
+
+      const formData = new FormData();
+      formData.append('studentFile', studentFile);
+      formData.append('workspaceFile', workspaceFile);
+
+      try {
+        const response = await fetch('/process-files', { // Replace '/process-files' with the actual endpoint of your server-side program
+          method: 'POST',
+          body: formData,
+        });
+
+        if (response.ok) {
+          const data = await response.json(); // Assuming your server returns JSON with download URLs
+
+          if (data && data.downloadUrls && Array.isArray(data.downloadUrls)) {
+            downloadLinksDiv.innerHTML = 'Download your generated files:';
+            data.downloadUrls.forEach(url => {
+              const link = document.createElement('a');
+              link.href = url;
+              link.innerText = 'Download File';
+              link.download = url.substring(url.lastIndexOf('/') + 1); // Suggest a filename
+              downloadLinksDiv.appendChild(document.createElement('br'));
+              downloadLinksDiv.appendChild(link);
+            });
+          } else {
+            downloadLinksDiv.innerHTML = 'No download links received from the server.';
+          }
+        } else {
+          downloadLinksDiv.innerHTML = 'Error processing files on the server.';
+          console.error('Server error:', response.status);
+        }
+      } catch (error) {
+        downloadLinksDiv.innerHTML = 'An error occurred while communicating with the server.';
+        console.error('Fetch error:', error);
+      }
+    }
+  </script>
+
 </body>
 </html>

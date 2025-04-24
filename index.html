@@ -5,6 +5,10 @@
     <script src="https://unpkg.com/xlsx/dist/xlsx.full.min.js"></script>
 </head>
 <body>
+    <header>
+      <h1>Student Email Generator</h1>
+      <h3>Load your files to generate persolized emails for students about their past and future workspaces<h3>
+    </header>
     <input type="file" id="fileOneInput" accept=".xlsx,.xls">
     <input type="file" id="fileTwoInput" accept=".xlsx,.xls">
     <button id="processFilesButton">Process Files and Generate Emails</button>
@@ -119,8 +123,14 @@
                 for (const row1 of df_cleaned_1) {
                     for (const row2 of df_cleaned_2) {
                         if (row1['First Name'] === row2['First Name'] && row1['Last Name'] === row2['Last Name']) {
-                            // Merge the two rows into a new object.
-                            all_the_data.push({ ...row1, ...row2 });
+                            // Merge the two rows into a new object.  Be explicit about which columns to use.
+                            const mergedRow = {
+                                ...row1,
+                                ...row2,
+                                'Practice Setting_x': row1['Practice Setting'], // Ensure correct value is used
+                                'Practice Setting_y': row2['Practice Setting'], // Ensure correct value is used
+                            };
+                            all_the_data.push(mergedRow);
                             break; // prevent duplicates
                         }
                     }
@@ -195,7 +205,6 @@
                 emailList.forEach(item => {
                     displayHTML += `<li><strong>${item.Name}:</strong><br>${item.Email}</li>`;
                 });
-                displayHTML += "</ul>";
                 resultsDiv.innerHTML = displayHTML;
 
             } else {

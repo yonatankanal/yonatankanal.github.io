@@ -1,80 +1,199 @@
+<!DOCTYPE html>
 <html>
 <head>
-  <title>Email Sender</title>
+    <title>Python to JavaScript Conversion</title>
+    <script src="https://unpkg.com/xlsx/dist/xlsx.full.min.js"></script>
+    <script>
+        // Mock input function for browser environment.  Uses a prompt, which isn't ideal,
+        // and doesn't truly replicate the blocking behavior of Python's input().
+        function input(promptText) {
+            return window.prompt(promptText);
+        }
+
+        // Helper function to create email content.  This is the equivalent of your
+        // Python create_email function.
+        function create_email(filler, name, current, future) {
+            let email = "";
+            if (filler === '1') {
+                email = `Dear ${name},\n\nYour current practice setting is ${current}, and your future practice setting will be ${future}.`;
+            } else if (filler === '2') {
+                email = `Hello ${name},\n\nI am writing to inform you that your practice setting is changing from ${current} to ${future}.`;
+            } else if (filler === '3') {
+                email = `Greetings ${name},\n\nYour practice setting will be updated from ${current} to ${future}.`;
+            } else {
+                email = "Invalid email format selected."; // Should never reach here, but good to have.
+            }
+            return email;
+        }
+
+        // Function to generate the .eml file content as a string
+        function generateEmlContent(from, to, subject, body) {
+            const emlContent = `From: ${from}\r\nTo: ${to}\r\nSubject: ${subject}\r\n\r\n${body}`;
+            return emlContent;
+        }
+
+        // Function to trigger the download of a file.  This is a general utility.
+        function downloadFile(filename, content) {
+            const blob = new Blob([content], { type: 'message/rfc822' }); // Use 'message/rfc822' for .eml
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            document.body.appendChild(a); // Append, trigger, and remove
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url); // Clean up the URL object
+        }
+
+        // Main function to process data and generate emails.  This is the
+        // JavaScript equivalent of your Python make_data function.  Note that
+        // this is asynchronous because file reading is asynchronous in JavaScript.
+        async function make_data(fileOne, fileTwo) {
+            // Use provided File objects,  no longer paths.
+            if (!fileOne || !fileTwo) {
+                alert("Please select both files.");
+                return []; // Or throw an error, depending on desired behavior
+            }
+
+            const list_o_emails = [];
+
+            try {
+                // Function to read Excel data from a File object.  Returns a Promise.
+                const readExcelFile = (file) => {
+                    return new Promise((resolve, reject) => {
+                        const reader = new FileReader();
+                        reader.onload = (e) => {
+                            try {
+                                const data = new Uint8Array(e.target.result);
+                                const workbook = XLSX.read(data, { type: 'array' });
+                                const sheetName = workbook.SheetNames[0]; // Get the first sheet
+                                const worksheet = workbook.Sheets[sheetName];
+                                const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
+
+                                // Convert to array of objects, handling the header row
+                                if (jsonData.length === 0) {
+                                    resolve([]);
+                                    return;
+                                }
+                                const headers = jsonData[0];
+                                const result = [];
+                                for (let i = 1; i < jsonData.length; i++) {
+                                    const rowData = jsonData[i];
+                                    const rowObject = {};
+                                    for (let j = 0; j < headers.length; j++) {
+                                        rowObject[headers[j]] = rowData[j];
+                                    }
+                                    result.push(rowObject);
+                                }
+                                resolve(result);
+
+                            } catch (error) {
+                                reject(error);
+                            }
+                        };
+                        reader.onerror = (error) => {
+                            reject(error);
+                        };
+                        reader.readAsArrayBuffer(file); // Use readAsArrayBuffer for Excel files
+                    });
+                };
+
+                // Read the Excel files using the function defined above
+                const df_1_data = await readExcelFile(fileOne);
+                const df_2_data = await readExcelFile(fileTwo);
+
+
+                // Simulate pandas dropna functionality.
+                const df_cleaned_1 = df_1_data.filter(row => row['Dates'] !== undefined && row['Dates'] !== null);
+                const df_cleaned_2 = df_2_data.filter(row => row['Dates'] !== undefined && row['Dates'] !== null);
+
+                // Simulate pandas merge with an inner join.
+                const all_the_data = [];
+                for (const row1 of df_cleaned_1) {
+                    for (const row2 of df_cleaned_2) {
+                        if (row1['First Name'] === row2['First Name'] && row1['Last Name'] === row2['Last Name']) {
+                            // Merge the two rows into a new object.
+                            all_the_data.push({ ...row1, ...row2 });
+                            break; // prevent duplicates
+                        }
+                    }
+                }
+
+                // Iterate through the merged data (simulating pandas iterrows).
+                for (const row of all_the_data) {
+                    const name = row['First Name'];
+                    const current = row['Practice Setting_x'];
+                    const future = row['Practice Setting_y'];
+
+                    let filler = input(`Which email format for ${name} (1, 2, or 3)? `);
+                    while (filler !== '1' && filler !== '2' && filler !== '3') {
+                        filler = input(`***Input 1, 2, or 3*** Which email format for ${name}? `);
+                    }
+
+                    let email = create_email(filler, name, current, future);
+                    let move_on = input(`\nTHAT WOULD LOOK LIKE THIS:\n-----\n${email}\n-----\nPress enter to move on to the next student. Press any character and then press enter to choose another format. `);
+                    while (move_on !== '') {
+                        filler = input(`Which email format for ${name} (1, 2, or 3)? `);
+                        while (filler !== '1' && filler !== '2' && filler !== '3') {
+                            filler = input(`***Input 1, 2, or 3*** Which email format for ${name}? `);
+                        }
+                        email = create_email(filler, name, current, future);
+                        move_on = input("Press enter to move on to the next student. Press any character and then press enter to choose another format. ");
+                    }
+                    list_o_emails.push({ Email: email, Name: name });
+                }
+
+                // Generate and download .eml files
+                for (let i = 0; i < list_o_emails.length; i++) {
+                    const emailData = list_o_emails[i];
+                    const emlContent = generateEmlContent(
+                        'ASI14@pitt.edu',          // From (you can make this configurable if needed)
+                        'recipient@example.com',  // To (you can make this configurable)
+                        `Email to be sent to ${emailData.Name}`, // Subject
+                        emailData.Email             // Body
+                    );
+                    const emlFileName = `email${i + 1}.eml`; // Use a simple filename
+                    downloadFile(emlFileName, emlContent);
+                }
+                return list_o_emails;
+
+            } catch (error) {
+                console.error("Error processing data:", error);
+                alert("An error occurred while processing the data.  See console for details.");
+                return []; // Or throw, depending on desired behavior
+            }
+        }
+
+        // Example usage (assuming you have file input elements in your HTML)
+        document.getElementById('processFilesButton').addEventListener('click', async () => {
+            const fileOneInput = document.getElementById('fileOneInput');
+            const fileTwoInput = document.getElementById('fileTwoInput');
+            const resultsDiv = document.getElementById('resultsDiv');
+
+            if (fileOneInput.files.length > 0 && fileTwoInput.files.length > 0) {
+                const fileOne = fileOneInput.files[0];
+                const fileTwo = fileTwoInput.files[0];
+
+                const emailList = await make_data(fileOne, fileTwo); // Pass the File objects
+                console.log(emailList); // Do something with the result (e.g., display in the page)
+
+                let displayHTML = "<h2>Generated Emails:</h2><ul>";
+                emailList.forEach(item => {
+                    displayHTML += `<li><strong>${item.Name}:</strong><br>${item.Email}</li>`;
+                });
+                displayHTML += "</ul>";
+                resultsDiv.innerHTML = displayHTML;
+
+            } else {
+                alert('Please select both file 1 and file 2');
+            }
+        });
+    </script>
 </head>
 <body>
-
-  <h1>Welcome to Email-Sender!</h1>
-
-  <p>This will allow you to send emails based on your two files with student names and workspaces.</p>
-
-  <div>
-    <label for="studentFile">Upload Student Names File:</label>
-    <input type="file" id="studentFile" name="studentFile">
-  </div>
-
-  <br>
-
-  <div>
-    <label for="workspaceFile">Upload Workspaces File:</label>
-    <input type="file" id="workspaceFile" name="workspaceFile">
-  </div>
-
-  <br>
-
-  <button onclick="processFiles()">Process Files and Generate Downloads</button>
-
-  <div id="downloadLinks">
-    </div>
-
-  <script>
-    async function processFiles() {
-      const studentFile = document.getElementById('studentFile').files[0];
-      const workspaceFile = document.getElementById('workspaceFile').files[0];
-      const downloadLinksDiv = document.getElementById('downloadLinks');
-      downloadLinksDiv.innerHTML = 'Processing files...'; // Provide user feedback
-
-      if (!studentFile || !workspaceFile) {
-        downloadLinksDiv.innerHTML = 'Please upload both files.';
-        return;
-      }
-
-      const formData = new FormData();
-      formData.append('studentFile', studentFile);
-      formData.append('workspaceFile', workspaceFile);
-
-      try {
-        const response = await fetch('/process-files', { // Replace '/process-files' with the actual endpoint of your server-side program
-          method: 'POST',
-          body: formData,
-        });
-
-        if (response.ok) {
-          const data = await response.json(); // Assuming your server returns JSON with download URLs
-
-          if (data && data.downloadUrls && Array.isArray(data.downloadUrls)) {
-            downloadLinksDiv.innerHTML = 'Download your generated files:';
-            data.downloadUrls.forEach(url => {
-              const link = document.createElement('a');
-              link.href = url;
-              link.innerText = 'Download File';
-              link.download = url.substring(url.lastIndexOf('/') + 1); // Suggest a filename
-              downloadLinksDiv.appendChild(document.createElement('br'));
-              downloadLinksDiv.appendChild(link);
-            });
-          } else {
-            downloadLinksDiv.innerHTML = 'No download links received from the server.';
-          }
-        } else {
-          downloadLinksDiv.innerHTML = 'Error processing files on the server.';
-          console.error('Server error:', response.status);
-        }
-      } catch (error) {
-        downloadLinksDiv.innerHTML = 'An error occurred while communicating with the server.';
-        console.error('Fetch error:', error);
-      }
-    }
-  </script>
-
+    <input type="file" id="fileOneInput" accept=".xlsx,.xls">
+    <input type="file" id="fileTwoInput" accept=".xlsx,.xls">
+    <button id="processFilesButton">Process Files and Generate Emails</button>
+    <div id="resultsDiv"></div>
 </body>
 </html>

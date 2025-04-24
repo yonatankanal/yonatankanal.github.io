@@ -5,6 +5,11 @@
     <script src="https://unpkg.com/xlsx/dist/xlsx.full.min.js"></script>
 </head>
 <body>
+    <input type="file" id="fileOneInput" accept=".xlsx,.xls">
+    <input type="file" id="fileTwoInput" accept=".xlsx,.xls">
+    <button id="processFilesButton">Process Files and Generate Emails</button>
+    <div id="resultsDiv"></div>
+
     <script>
         // Mock input function for browser environment.  Uses a prompt, which isn't ideal,
         // and doesn't truly replicate the blocking behavior of Python's input().
@@ -172,6 +177,13 @@
             const fileTwoInput = document.getElementById('fileTwoInput');
             const resultsDiv = document.getElementById('resultsDiv');
 
+            // Check for files *first*
+            if (fileOneInput.files.length === 0 || fileTwoInput.files.length === 0) {
+                alert('Please select both file 1 and file 2');
+                return; // Stop processing if files are missing
+            }
+
+
             if (fileOneInput.files.length > 0 && fileTwoInput.files.length > 0) {
                 const fileOne = fileOneInput.files[0];
                 const fileTwo = fileTwoInput.files[0];
@@ -191,9 +203,5 @@
             }
         });
     </script>
-    <input type="file" id="fileOneInput" accept=".xlsx,.xls">
-    <input type="file" id="fileTwoInput" accept=".xlsx,.xls">
-    <button id="processFilesButton">Processs Files and Generate Emails</button>
-    <div id="resultsDiv"></div>
 </body>
 </html>

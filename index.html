@@ -137,26 +137,17 @@
                 }
 
                 // Iterate through the merged data (simulating pandas iterrows).
+                // Iterate through the merged data (simulating pandas iterrows).
+                let filler = input(`Which email format (1, 2, or 3)? `);
+                while (filler !== '1' && filler !== '2' && filler !== '3') {
+                        filler = input(`***Input 1, 2, or 3*** Which email format? `);
+                    }
                 for (const row of all_the_data) {
                     const name = row['First Name'];
                     const current = row['Practice Setting_x'];
                     const future = row['Practice Setting_y'];
-
-                    let filler = input(`Which email format for ${name} (1, 2, or 3)? `);
-                    while (filler !== '1' && filler !== '2' && filler !== '3') {
-                        filler = input(`***Input 1, 2, or 3*** Which email format for ${name}? `);
-                    }
-
+                    
                     let email = create_email(filler, name, current, future);
-                    let move_on = input(`\nTHAT WOULD LOOK LIKE THIS:\n-----\n${email}\n-----\nPress enter to move on to the next student. Press any character and then press enter to choose another format. `);
-                    while (move_on !== '') {
-                        filler = input(`Which email format for ${name} (1, 2, or 3)? `);
-                        while (filler !== '1' && filler !== '2' && filler !== '3') {
-                            filler = input(`***Input 1, 2, or 3*** Which email format for ${name}? `);
-                        }
-                        email = create_email(filler, name, current, future);
-                        move_on = input(`\nTHAT WOULD LOOK LIKE THIS:\n-----\n${email}\n-----\nPress enter to move on to the next student. Press any character and then press enter to choose another format. `); //show email again
-                    }
                     list_o_emails.push({ Email: email, Name: name });
                 }
 

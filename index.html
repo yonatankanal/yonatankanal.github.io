@@ -3,6 +3,8 @@
 <head>
     <title>Python to JavaScript Conversion</title>
     <script src="https://unpkg.com/xlsx/dist/xlsx.full.min.js"></script>
+</head>
+<body>
     <script>
         // Mock input function for browser environment.  Uses a prompt, which isn't ideal,
         // and doesn't truly replicate the blocking behavior of Python's input().
@@ -189,8 +191,6 @@
             }
         });
     </script>
-</head>
-<body>
     <input type="file" id="fileOneInput" accept=".xlsx,.xls">
     <input type="file" id="fileTwoInput" accept=".xlsx,.xls">
     <button id="processFilesButton">Process Files and Generate Emails</button>

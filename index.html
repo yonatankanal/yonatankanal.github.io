@@ -7,7 +7,7 @@
 <body>
     <header>
       <h1>Student Email Generator</h1>
-      <h3>Load your files to generate persolized emails for students about their past and future workspaces<h3>
+      <h3>Load your files to generate persolized emails for students about their past & future workspaces<h3>
     </header>
     <input type="file" id="fileOneInput" accept=".xlsx,.xls">
     <input type="file" id="fileTwoInput" accept=".xlsx,.xls">
@@ -155,7 +155,7 @@
                             filler = input(`***Input 1, 2, or 3*** Which email format for ${name}? `);
                         }
                         email = create_email(filler, name, current, future);
-                        move_on = input("Press enter to move on to the next student. Press any character and then press enter to choose another format. ");
+                        move_on = input(`\nTHAT WOULD LOOK LIKE THIS:\n-----\n${email}\n-----\nPress enter to move on to the next student. Press any character and then press enter to choose another format. `); //show email again
                     }
                     list_o_emails.push({ Email: email, Name: name });
                 }

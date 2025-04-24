@@ -7,7 +7,7 @@
 <body>
     <header>
       <h1>Student Email Generator</h1>
-      <h3>Load your files to generate persolized emails for students about their past and future workspaces.<h3>
+      <h3>Load your files to generate personalized emails for students about their past & future workspaces<h3>
     </header>
     <input type="file" id="fileOneInput" accept=".xlsx,.xls">
     <input type="file" id="fileTwoInput" accept=".xlsx,.xls">
@@ -26,11 +26,11 @@
         function create_email(filler, name, current, future,signature) {
             let email = "";
             if (filler === '1') {
-                email = `Dear ${name},\n\nYour current practice setting is ${current}, and your future practice setting will be ${future}.\n\n${signature}`;
+                email = `Dear ${name},\n\nYour current practice setting is ${current}, and your future practice setting will be ${future}.\n\nTake care,\n${signature}`;
             } else if (filler === '2') {
-                email = `Hello ${name},\n\nI am writing to inform you that your practice setting is changing from ${current} to ${future}.\n\n${signature}`;
+                email = `Hello ${name},\n\nI am writing to inform you that your practice setting is changing from ${current} to ${future}.\n\nTake care,\n${signature}`;
             } else if (filler === '3') {
-                email = `Greetings ${name},\n\nYour practice setting will be updated from ${current} to ${future}.\n\n${signature}`;
+                email = `Greetings ${name},\n\nYour practice setting will be updated from ${current} to ${future}.\n\nTake care,\n${signature}`;
             } else {
                 email = "Invalid email format selected."; // Should never reach here, but good to have.
             }
@@ -139,7 +139,7 @@
                 // Iterate through the merged data (simulating pandas iterrows).
                 // Iterate through the merged data (simulating pandas iterrows).
                 let filler = input(`Which email format (1, 2, or 3)? `);
-                let signature = input(`What would you like the signature to be? `)
+                let signature = input(`What is your name (for the signature)? `)
                 while (filler !== '1' && filler !== '2' && filler !== '3') {
                         filler = input(`***Input 1, 2, or 3*** Which email format? `);
                     }

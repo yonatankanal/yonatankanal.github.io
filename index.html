@@ -22,7 +22,6 @@
             </section>
         </header>
 
-        <div class="container">
             <section class="mt-3">
                 <h3>Upload Files and Enter Details</h3>
 
@@ -60,7 +59,7 @@
                 <button id="processFilesButton" class="btn btn-primary">Process Files and Generate Emails</button>
                 <div id="resultsDiv"></div>
             </section>
-        </div>
+
     </div>
 
     <script>
@@ -69,7 +68,7 @@
             const version = document.getElementById('version').value;
             const signature = document.getElementById('signature').value;
             const email = document.getElementById('emailAddress').value;
-        }
+        })
 
         
         function create_email(version, name, current, future, signature) {

@@ -23,42 +23,44 @@
         </header>
 
         <div class="container">
-            <h3 class="mt-3">Upload Files and Enter Details</h3>
+            <section class="mt-3">
+                <h3>Upload Files and Enter Details</h3>
 
-            <div class="mb-3">
-                <label for="fileOneInput" class="form-label">File One (.xlsx, .xls)</label>
-                <input type="file" class="form-control" id="fileOneInput" accept=".xlsx,.xls">
-            </div>
+                <div class="mb-3">
+                    <label for="fileOneInput" class="form-label">File One (.xlsx, .xls)</label>
+                    <input type="file" class="form-control" id="fileOneInput" accept=".xlsx,.xls">
+                </div>
 
-            <div class="mb-3">
-                <label for="fileTwoInput" class="form-label">File Two (.xlsx, .xls)</label>
-                <input type="file" class="form-control" id="fileTwoInput" accept=".xlsx,.xls">
-            </div>
+                <div class="mb-3">
+                    <label for="fileTwoInput" class="form-label">File Two (.xlsx, .xls)</label>
+                    <input type="file" class="form-control" id="fileTwoInput" accept=".xlsx,.xls">
+                </div>
 
-            <div class="mb-3">
-                <label for="signature" class="form-label">Enter your Name (for email signature):</label>
-                <input type="text" class="form-control" id="signature"  required>
-            </div>
+                <div class="mb-3">
+                    <label for="signature" class="form-label">Enter your Name (for email signature):</label>
+                    <input type="text" class="form-control" id="signature"  required>
+                </div>
 
-            <div class="mb-3">
-                <label for="email" class="form-label">Enter your email:</label>
-                <input type="email" class="form-control" id="emailAddress" size="30" required>
-            </div>
+                <div class="mb-3">
+                    <label for="email" class="form-label">Enter your email:</label>
+                    <input type="email" class="form-control" id="emailAddress" size="30" required>
+                </div>
 
-            <div class="mb-3">
-            <label for="version" class="form-label">Select Email Format:</label>
-            <select class="form-select" id="version">
-                <option value="1">Format 1</option>
-                <option value="2">Format 2</option>
-                <option value="3">Format 3</option>
-                <option value="4">Format 4</option>
-                <option value="5">Format 5</option>
-                <option value="6">Format 6</option>
-            </select>
-            </div>
+                <div class="mb-3">
+                <label for="version" class="form-label">Select Email Format:</label>
+                <select class="form-select" id="version">
+                    <option value="1">Format 1</option>
+                    <option value="2">Format 2</option>
+                    <option value="3">Format 3</option>
+                    <option value="4">Format 4</option>
+                    <option value="5">Format 5</option>
+                    <option value="6">Format 6</option>
+                </select>
+                </div>
 
-            <button id="processFilesButton" class="btn btn-primary">Process Files and Generate Emails</button>
-            <div id="resultsDiv"></div>
+                <button id="processFilesButton" class="btn btn-primary">Process Files and Generate Emails</button>
+                <div id="resultsDiv"></div>
+            </section>
         </div>
     </div>
 

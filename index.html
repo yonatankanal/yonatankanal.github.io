@@ -23,7 +23,7 @@
         </header>
 
         <div class="container">
-            <h2 class="mb-4">Upload Files and Enter Details</h2>
+            <h2 class="mt-3">Upload Files and Enter Details</h3>
 
             <div class="mb-3">
                 <label for="fileOneInput" class="form-label">File One (.xlsx, .xls)</label>
@@ -66,7 +66,7 @@
         
         function create_email(version, name, current, future, signature) {
             let email_txt = "";
-            switch (version) {
+            switch version {
                 case '1':
                     email_txt = `Dear ${name},\n\nYour current practice setting is ${current}, and your future practice setting will be ${future}.\n\nTake care,\n${signature}`;
                     break;
@@ -87,9 +87,8 @@
                     break;
                 default:
                     email_txt = "Invalid email format selected."; // Should never reach here, but good to have.
-
-                return email_txt;
             }
+            return email_txt;
         }
 
         // Function to generate the .eml file content as a string

@@ -14,7 +14,7 @@
                 <h3>Directions:</h3>
                 <p>
                     <ul class="list-unstyled">
-                        <li>IMPORTANT: Once the computer downloads the files, to get the messages to appear as drafts in your inbox you can click on the "folder" icon in the top right, and then select "All Drafts" in the droplist.</li>
+                        <li>IMPORTANT: Once the computer downloads the files, in order to get the messages to appear as drafts in your inbox you can click on the "folder" icon in the top right, and then select "All Drafts" in the droplist.</li>
                         <li>Upload your files onto the page. File one is the past assignments, and file two is the future assignments.</li>
                         <li>Hit the "Process Files and Generate Emails" button.</li>
                     </ul>
@@ -48,12 +48,12 @@
             <div class="mb-3">
             <label for="version" class="form-label">Select Email Format:</label>
             <select class="form-select" id="version">
-                <option value="1">Format 1</option>
-                <option value="2">Format 2</option>
-                <option value="3">Format 3</option>
-                <option value="4">Format 4</option>
-                <option value="5">Format 5</option>
-                <option value="6">Format 6</option>
+                <option value=1>Format 1</option>
+                <option value=2>Format 2</option>
+                <option value=3>Format 3</option>
+                <option value=4>Format 4</option>
+                <option value=5>Format 5</option>
+                <option value=6>Format 6</option>
             </select>
             </div>
 
@@ -67,22 +67,22 @@
         function create_email(version, name, current, future, signature) {
             let email_txt = "";
             switch (version) {
-                case `1`:
+                case 1:
                     email_txt = `Dear ${name},\n\nYour current practice setting is ${current}, and your future practice setting will be ${future}.\n\nTake care,\n${signature}`;
                     break;
-                case `2`:
+                case 2:
                     email_txt = `Hello ${name},\n\nI am writing to inform you that your practice setting is changing from ${current} to ${future}.\n\nTake care,\n${signature}`;
                     break;
-                case `3`:
+                case 3:
                     email_txt = `Greetings ${name},\n\nYour practice setting will be updated from ${current} to ${future}.\n\nTake care,\n${signature}`;
                     break;
-               case `4`:
+               case 4:
                     email_txt = `Hi ${name},\n\nYour practice setting is no longer ${current} and is rather this ${future}.\n\nTake care,\n${signature}`;
                     break;
-                case `5`:
+                case 5:
                     email_txt = `Hey ${name},\n\nYour practice setting will be updated from ${current} to ${future}.\n\nTake care,\n${signature}`;
                     break;
-                case `6`:
+                case 6:
                     email_txt = `Yo ${name},\n\nYour practice setting will be updated from ${current} to ${future}.\n\nTake care,\n${signature}`;
                     break;
             }

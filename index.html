@@ -67,11 +67,7 @@
         
         function create_email(version, name, current, future, signature) {
             let email_txt = "";
-            document.getElementById('processFilesButton').addEventListener('click', function() {
-                const version = document.getElementById('version').value;
-                const signature = document.getElementById('signature').value;
-                const email = document.getElementById('emailAddress').value;
-            })
+
             switch (version) {
                 case '1':
                     email_txt = `Dear ${name},\n\nHappy first day of Fieldwork! You are ready for this—you’ve done the didactic work and now it’s time to take the knowledge that you have and use it in practice. You can do this!\n\nI hope you have a wonderful experience at ${current} and please don’t hesitate to reach out to Ann and/or me with wins or concerns! Keep in touch and I’m excited to hear about all that you learn.\n\nHave a great day and don’t forget to enjoy!\n\nBe well,\n${signature}`;
@@ -194,7 +190,10 @@
                 }
 
                 // Iterate through the merged data (simulating pandas iterrows).
-                // Iterate through the merged data (simulating pandas iterrows).
+                const version = document.getElementById('version').value;
+                const signature = document.getElementById('signature').value;
+                const email = document.getElementById('emailAddress').value;
+
                 for (const row of all_the_data) {
                     const name = row['First Name'];
                     const current = row['Practice Setting_x'];
@@ -206,17 +205,14 @@
 
                 // Generate and download .eml files
                 for (let i = 0; i < list_o_emails.length; i++) {
-                    document.getElementById('processFilesButton').addEventListener('click', function() {
-                        const email = document.getElementById('emailAddress').value;
-                    })  
                     const emailData = list_o_emails[i];
                     const emlContent = generateEmlContent(
-                        'ASI14@pitt.edu',          // From (you can make this configurable if needed)
-                        'recipient@example.com',  // To (you can make this configurable)
-                        `Email to be sent to ${emailData.Name}`, // Subject
+                        email,                      // From
+                        'CHANGE_ME@example.com',    // To
+                        `CHANGE_ME`,                // Subject
                         emailData.Email             // Body
                     );
-                    const emlFileName = `email${i + 1}.eml`; // Use a simple filename
+                    const emlFileName = `email${i + 1}.eml`; // simple filename
                     downloadFile(emlFileName, emlContent);
                 }
                 return list_o_emails;
@@ -224,7 +220,7 @@
             } catch (error) {
                 console.error("Error processing data:", error);
                 alert("An error occurred while processing the data.  See console for details.");
-                return []; // Or throw, depending on desired behavior
+                return [];
             }
         }
 
@@ -245,8 +241,8 @@
                 const fileOne = fileOneInput.files[0];
                 const fileTwo = fileTwoInput.files[0];
 
-                const emailList = await make_data(fileOne, fileTwo); // Pass the File objects
-                console.log(emailList); // Do something with the result (e.g., display in the page)
+                const emailList = await make_data(fileOne, fileTwo);
+                console.log(emailList);
 
                 let displayHTML = "<h2>Generated Emails:</h2><ul>";
                 emailList.forEach(item => {
@@ -258,6 +254,7 @@
                 alert('Please select both file 1 and file 2');
             }
         });
+
     </script>
 </body>
 </html>

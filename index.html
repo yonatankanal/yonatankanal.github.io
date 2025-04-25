@@ -23,11 +23,8 @@
         </header>
 
         <div class="container">
-    <div class="row">
-        <div class="col-md-12">
             <section class="mt-3">
                 <h3>Upload Files and Enter Details</h3>
-                </section>
 
                 <div class="mb-3">
                     <label for="fileOneInput" class="form-label">File One (.xlsx, .xls)</label>
@@ -68,9 +65,8 @@
 
     <script>
 
-        
-        const signature = document.getElementById('signature').value;
         const version = document.getElementById('version').value;
+        const signature = document.getElementById('signature').value;
         const email = document.getElementById('emailAddress').value;
 
         
@@ -212,8 +208,8 @@
                 for (let i = 0; i < list_o_emails.length; i++) {
                     const emailData = list_o_emails[i];
                     const emlContent = generateEmlContent(
-                        email,          // From (you can make this configurable if needed)
-                        'SET_THIS_YOURSELF@example.com',  // To (you can make this configurable)
+                        'ASI14@pitt.edu',          // From (you can make this configurable if needed)
+                        'recipient@example.com',  // To (you can make this configurable)
                         `Email to be sent to ${emailData.Name}`, // Subject
                         emailData.Email             // Body
                     );
@@ -229,8 +225,36 @@
             }
         }
 
-        
+        // Example usage (assuming you have file input elements in your HTML)
+        document.getElementById('processFilesButton').addEventListener('click', async () => {
+            const fileOneInput = document.getElementById('fileOneInput');
+            const fileTwoInput = document.getElementById('fileTwoInput');
+            const resultsDiv = document.getElementById('resultsDiv');
 
+            // Check for files *first*
+            if (fileOneInput.files.length === 0 || fileTwoInput.files.length === 0) {
+                alert('Please select both file 1 and file 2');
+                return; // Stop processing if files are missing
+            }
+
+
+            if (fileOneInput.files.length > 0 && fileTwoInput.files.length > 0) {
+                const fileOne = fileOneInput.files[0];
+                const fileTwo = fileTwoInput.files[0];
+
+                const emailList = await make_data(fileOne, fileTwo); // Pass the File objects
+                console.log(emailList); // Do something with the result (e.g., display in the page)
+
+                let displayHTML = "<h2>Generated Emails:</h2><ul>";
+                emailList.forEach(item => {
+                    displayHTML += `<li><strong>${item.Name}:</strong><br>${item.Email}</li>`;
+                });
+                resultsDiv.innerHTML = displayHTML;
+
+            } else {
+                alert('Please select both file 1 and file 2');
+            }
+        });
     </script>
 </body>
 </html>

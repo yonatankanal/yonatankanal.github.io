@@ -1,4 +1,6 @@
 <!DOCTYPE html>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-SgOJa3DmI69IUzQ2PVdRZhwQ+dy64/BUtbMJw1MZ8t5HZApcHrRKUc4W0kG879m7" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js" integrity="sha384-k6d4wzSIapyDyv1kpU366/PK5hCdSbCRGRCMv+eplOQJWyd1fbcAu9OCUj5zNLiq" crossorigin="anonymous"></script>
 <html>
 <head>
     <title>Python to JavaScript Conversion</title>
@@ -16,18 +18,31 @@
             <li>IMPORTANT: Once the computer downloads the files, in order to get the messages to appear as drafts in your inbox you can click on the "folder" icon in the top right and click "All Drafts" from the droplist</li>
             <li>Upload your files onto the page. File one is the past assignments, and file two is the future assignments</li>
             <li>Hit the "Process Files and Generate Emails" button</li>
-            <li></li>
           </ul>
         </p>
       </section>
+    <div class="container">
+        <h2 class="mb-4">Upload Files and Enter Details</h2>
 
-    </header>
-    <input type="file" id="fileOneInput" accept=".xlsx,.xls">
-    <input type="file" id="fileTwoInput" accept=".xlsx,.xls">
-    <label for="email">Enter your email:</label>
-    <input type="email" id="email" size="30" required />
-    <button id="processFilesButton">Process Files and Generate Emails</button>
-    <div id="resultsDiv"></div>
+        <div class="mb-3">
+            <label for="fileOneInput" class="form-label">File One (.xlsx, .xls)</label>
+            <input type="file" class="form-control" id="fileOneInput" accept=".xlsx,.xls">
+        </div>
+
+        <div class="mb-3">
+            <label for="fileTwoInput" class="form-label">File Two (.xlsx, .xls)</label>
+            <input type="file" class="form-control" id="fileTwoInput" accept=".xlsx,.xls">
+        </div>
+
+        <div class="mb-3">
+            <label for="email" class="form-label">Enter your email:</label>
+            <input type="email" class="form-control" id="email" size="30" required>
+        </div>
+
+        <button id="processFilesButton" class="btn btn-primary">Process Files and Generate Emails</button>
+
+        <div id="resultsDiv"></div>
+    </div>
 
     <script>
         // Mock input function for browser environment.  Uses a prompt, which isn't ideal,
@@ -39,15 +54,15 @@
         // Helper function to create email content.  This is the equivalent of your
         // Python create_email function.
         function create_email(filler, name, current, future,signature) {
-            let email = "";
+            let email_txt = "";
             if (filler === '1') {
-                email = `Dear ${name},\n\nYour current practice setting is ${current}, and your future practice setting will be ${future}.\n\nTake care,\n${signature}`;
+                email_txt = `Dear ${name},\n\nYour current practice setting is ${current}, and your future practice setting will be ${future}.\n\nTake care,\n${signature}`;
             } else if (filler === '2') {
-                email = `Hello ${name},\n\nI am writing to inform you that your practice setting is changing from ${current} to ${future}.\n\nTake care,\n${signature}`;
+                email_txt = `Hello ${name},\n\nI am writing to inform you that your practice setting is changing from ${current} to ${future}.\n\nTake care,\n${signature}`;
             } else if (filler === '3') {
-                email = `Greetings ${name},\n\nYour practice setting will be updated from ${current} to ${future}.\n\nTake care,\n${signature}`;
+                email_txt = `Greetings ${name},\n\nYour practice setting will be updated from ${current} to ${future}.\n\nTake care,\n${signature}`;
             } else {
-                email = "Invalid email format selected."; // Should never reach here, but good to have.
+                email_txt = "Invalid email format selected."; // Should never reach here, but good to have.
             }
             return email;
         }
@@ -155,7 +170,6 @@
                 // Iterate through the merged data (simulating pandas iterrows).
                 let filler = input(`Which email format (1, 2, or 3)? `);
                 let signature = input(`What is your name (for the signature)? `)
-                let email = input()
                 while (filler !== '1' && filler !== '2' && filler !== '3') {
                         filler = input(`***Input 1, 2, or 3*** Which email format? `);
                     }
@@ -164,7 +178,7 @@
                     const current = row['Practice Setting_x'];
                     const future = row['Practice Setting_y'];
                     
-                    let email = create_email(filler, name, current, future,signature);
+                    let email_txt = create_email(filler, name, current, future,signature);
                     list_o_emails.push({ Email: email, Name: name });
                 }
 

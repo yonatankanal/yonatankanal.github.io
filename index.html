@@ -15,7 +15,7 @@
         </h3>
         <p>
           <ul>
-            <li>IMPORTANT: Once the computer downloads the files, to get the messages to appear as drafts in your inbox you can click on the "folder" icon in the top right, and then select "All Drafts" in the droplist.</li>
+            <li>IMPORTANT: Once the computer downloads the files, in order to get the messages to appear as drafts in your inbox you can click on the "folder" icon in the top right, and then select "All Drafts" in the droplist.</li>
             <li>Upload your files onto the page. File one is the past assignments, and file two is the future assignments.</li>
             <li>Hit the "Process Files and Generate Emails" button.</li>
           </ul>
@@ -45,7 +45,7 @@
         </div>
 
         <div class="mb-3">
-        <label for="formEmail" class="form-label">Select Email Format:</label>
+        <label for="version" class="form-label">Select Email Format:</label>
         <select class="form-select" id="version">
             <option value="1">Format 1</option>
             <option value="2">Format 2</option>
@@ -191,7 +191,7 @@
                     const current = row['Practice Setting_x'];
                     const future = row['Practice Setting_y'];
                     
-                    let email_txt = create_email(formEmail, name, current, future, signature);
+                    let email_txt = create_email(version, name, current, future, signature);
                     list_o_emails.push({ Email: email_txt, Name: name });
                 }
 

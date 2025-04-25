@@ -15,7 +15,7 @@
         </h3>
         <p>
           <ul>
-            <li>IMPORTANT: Once the computer downloads the files, in order to get the messages to appear as drafts in your inbox you can click on the "folder" icon in the top right, and then select "All Drafts" in the droplist.</li>
+            <li>IMPORTANT: Once the computer downloads the files, to get the messages to appear as drafts in your inbox you can click on the "folder" icon in the top right, and then select "All Drafts" in the droplist.</li>
             <li>Upload your files onto the page. File one is the past assignments, and file two is the future assignments.</li>
             <li>Hit the "Process Files and Generate Emails" button.</li>
           </ul>
@@ -65,23 +65,24 @@
         
         function create_email(version, name, current, future, signature) {
             let email_txt = "";
-            switch (version)
-            case '1':
-                email_txt = `Dear ${name},\n\nYour current practice setting is ${current}, and your future practice setting will be ${future}.\n\nTake care,\n${signature}`;
-            case '2':
-                email_txt = `Hello ${name},\n\nI am writing to inform you that your practice setting is changing from ${current} to ${future}.\n\nTake care,\n${signature}`;
-            case '3':
-                email_txt = `Greetings ${name},\n\nYour practice setting will be updated from ${current} to ${future}.\n\nTake care,\n${signature}`;
-           case '4':
-                email_txt = `Hi ${name},\n\nYour practice setting is no longer ${current} and is rather this ${future}.\n\nTake care,\n${signature}`;
-            case '5':
-                email_txt = `Hey ${name},\n\nYour practice setting will be updated from ${current} to ${future}.\n\nTake care,\n${signature}`;
-            case '6':
-                email_txt = `Yo ${name},\n\nYour practice setting will be updated from ${current} to ${future}.\n\nTake care,\n${signature}`;
-            default:
-                email_txt = "Invalid email format selected."; // Should never reach here, but good to have.
+            switch (version) {
+                case '1':
+                    email_txt = `Dear ${name},\n\nYour current practice setting is ${current}, and your future practice setting will be ${future}.\n\nTake care,\n${signature}`;
+                case '2':
+                    email_txt = `Hello ${name},\n\nI am writing to inform you that your practice setting is changing from ${current} to ${future}.\n\nTake care,\n${signature}`;
+                case '3':
+                    email_txt = `Greetings ${name},\n\nYour practice setting will be updated from ${current} to ${future}.\n\nTake care,\n${signature}`;
+               case '4':
+                    email_txt = `Hi ${name},\n\nYour practice setting is no longer ${current} and is rather this ${future}.\n\nTake care,\n${signature}`;
+                case '5':
+                    email_txt = `Hey ${name},\n\nYour practice setting will be updated from ${current} to ${future}.\n\nTake care,\n${signature}`;
+                case '6':
+                    email_txt = `Yo ${name},\n\nYour practice setting will be updated from ${current} to ${future}.\n\nTake care,\n${signature}`;
+                default:
+                    email_txt = "Invalid email format selected."; // Should never reach here, but good to have.
 
-            return email_txt;
+                return email_txt;
+            }
         }
 
         // Function to generate the .eml file content as a string
